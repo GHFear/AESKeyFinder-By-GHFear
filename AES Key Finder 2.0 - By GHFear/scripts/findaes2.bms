@@ -63,10 +63,6 @@ do
 
     findloc OBJE binary "\xC7"
 	goto OBJE
-
-
-
-
     get TEST byte
    
     if TEST == 0xC7
@@ -90,7 +86,6 @@ do
                     get AES4 long
 	                get TEST5 byte
 				    
-				
 				    if TEST5 == 0xC7
 			            get DUMMY6 short
                         get AES5 long
@@ -111,7 +106,6 @@ do
                                     get AES8 long
 	                                get TESTC3 byte
 									
-									
 				                    #Calculate OFFSET
 						            xmath OFFSET "ENTRY_OFF + 1"
 									xmath OFFSET2 "ENTRY_OFF + 8"
@@ -122,7 +116,6 @@ do
 									xmath OFFSET7 "ENTRY_OFF + 43"
 									xmath OFFSET8 "ENTRY_OFF + 50"
 
-									
 									#Set NAME and FULL_AES to Possible AES Key
 									string NAME p "%s\%s\0x%08X%08X%08X%08X%08X%08X%08X%08X" FOLDER "OFFSET" "AES1" "AES2" "AES3" "AES4" "AES5" "AES6" "AES7" "AES8"
 									string FULL_AES p "0x%08X%08X%08X%08X%08X%08X%08X%08X" "AES1" "AES2" "AES3" "AES4" "AES5" "AES6" "AES7" "AES8"
@@ -134,23 +127,16 @@ do
 									for i = 0 < KEYS
 									    getarray STR 10 i
 									    if STR == FULL_AES
-										
 									        math FALSEPOSITIVE = 1
-										
 										else
                                             
-											
-											
 									    endif
-										
-										
 										
 									next i
 									
 									if FALSEPOSITIVE = 0
 										append
 				                        log NAME OFFSET 4
-									
 									    log NAME OFFSET2 4
 									    log NAME OFFSET3 4
 									    log NAME OFFSET4 4
@@ -159,7 +145,6 @@ do
 									    log NAME OFFSET7 4
 									    log NAME OFFSET8 4
 									    append
-									
 									    if FOUND == "TRUE"
 									        print "Possible AES Key found! Looking for more...
 										¦"
@@ -167,46 +152,25 @@ do
 										endif
 									    print "%FULL_AES%
 									    ¦"
-							        else
-										
-									
-									endif
-									
-									
+							        else	
+									endif	
 				                else	
 				                endif	
-				
-					
 				            else	
-				            endif	
-				            
-					
+				            endif
 				        else	
 				        endif	
-				
-					
 				    else	
 				    endif	
-				
-				
-					
 				else	
 				endif	
-				
-                
-				
 			else	
             endif
-            
 		else	
         endif
-        
-
-
     else
     endif		
     
-
 	math SIZE - 1	
     if SIZE < 55
 	    print "¦

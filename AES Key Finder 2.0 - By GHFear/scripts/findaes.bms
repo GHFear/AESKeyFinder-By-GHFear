@@ -53,8 +53,6 @@ do
 
     findloc OBJE binary "\xC7"
 	goto OBJE
-
-    
     get TEST byte
    
     if TEST == 0xC7
@@ -79,7 +77,6 @@ do
 					get DUMMY71 long
 	                get TEST5 byte
 				    
-				
 				    if TEST5 == 0xC7
 			            get DUMMY6 short
                         get AES5 long
@@ -100,7 +97,6 @@ do
                                     get AES8 long
 	                                get TESTC3 byte
 									
-									
 				                    #Calculate OFFSET
 						            xmath OFFSET "ENTRY_OFF + 2"
 									xmath OFFSET2 "ENTRY_OFF + 9"
@@ -111,17 +107,13 @@ do
 									xmath OFFSET7 "ENTRY_OFF + 48"
 									xmath OFFSET8 "ENTRY_OFF + 55"
 									
-									
-									
 									#Set NAME and FULL_AES to Possible AES Key
 									string NAME p "%s\%s\0x%08X%08X%08X%08X%08X%08X%08X%08X" FOLDER "OFFSET" "AES1" "AES2" "AES3" "AES4" "AES5" "AES6" "AES7" "AES8"
 									string FULL_AES p "0x%08X%08X%08X%08X%08X%08X%08X%08X" "AES1" "AES2" "AES3" "AES4" "AES5" "AES6" "AES7" "AES8"
 
-									
 									math FALSEPOSITIVE = 0
 									
 									#Check For False Positives and LOG if PASS
-									
 									
 							        getarray KEYS 10 -0x80000000
 									for i = 0 < KEYS
@@ -132,12 +124,7 @@ do
 										
 										else
                                             
-											
-											
 									    endif
-										
-										
-										
 									next i
 									
 									if FALSEPOSITIVE = 0 
@@ -162,48 +149,24 @@ do
 									    ¦"
 											
 											
-									else
-										
-									
+									else	
 									endif
-									
-							        
-						
-				
-					
 				                else	
 				                endif	
-				
-					
 				            else	
 				            endif	
-				            
-					
 				        else	
 				        endif	
-				
-					
 				    else	
 				    endif	
-				
-				
-					
 				else	
 				endif	
-				
-                
-				
 			else	
             endif
-            
 		else	
         endif
-        
-
-
     else
     endif		
-    
     
 	math SIZE - 1			
     if SIZE < 60
