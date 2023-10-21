@@ -173,17 +173,11 @@ do
         print "¦
 ¦
 ¦
-¦SCAN 2/2 DONE!
+¦SCAN 1/3 DONE!
 ¦
 --------------------------------------------------------------------"
         cleanexit
         
     endif
        
-
-   
 while SIZE > 0
-
-
-findloc OBJE binary "\xCB\x35\xAA\x2B"
-print "%OBJE%"
