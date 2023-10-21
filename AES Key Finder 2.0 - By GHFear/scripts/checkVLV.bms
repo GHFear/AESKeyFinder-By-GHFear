@@ -1,0 +1,20 @@
+goto 64
+getdstring Piss 3
+
+
+if Piss == "VLV"
+
+    print " "
+    print "WARNING!!!"
+	print " "
+    print "This is packaged with SteamStub DRM. EXIT this process and unpack it with Steamless!"
+	print " "
+	print "You can also hit Enter/Return to continue scanning and hope for the best."
+	print " "
+	
+else
+    print " "
+    print "No SteamStub DMR detected. Hit Enter/Return to continue scanning!"
+	print " "
+	
+endif

@@ -1,0 +1,235 @@
+# 256-bit AES Key Recovery Script [QuickBMS] by GHFear
+
+#This script checks UNCOMPRESSED or DECOMPRESSED Game EXE's for 256-bit AES Keys.
+#AES 2 byte first padding, extra padding middle of Key. 
+
+#Tested and Works with:
+#Splitgate: Arena Warfare
+#Prey: Typhon Hunter
+#Satisfactory
+#Bright Memory
+#Demons Are Crazy
+#Probably works with more game EXE's, but not tested on any more since I don't have access to any more EXE's.
+endian big
+get FOLDER basename
+string NAME1 = AES
+get SIZE asize
+string FOUND = "TRUE"
+
+#List Known False Positives
+putarray 10 0 "0x0001000001000F0001000001000F0001000001000F0001000001000F00010000"
+putarray 10 1 "0xCDCC4C3FCDCCCC3ECDCC4C3F3333333FCDCCCC3E0000C8420000C84400001842"
+putarray 10 2 "0x0000C84200002043010000000000484200009C42010000000000D8410000A842"
+putarray 10 3 "0x0000803F0000803F0000803F0000803F0000803F0000803F0000803F0000803F"
+putarray 10 4 "0xCDCC4C3FCDCCCC3ECDCC4C3F3333333FCDCC4C3E0000C8420000C84400001842"
+putarray 10 5 "0xFFD9FFD9FFD9FFD9FFD9FFD9FFD9FFD9FFD9FFD9FFD9FFD9FFD9FFD9FFD9FFD9"
+putarray 10 6 "0x0000803F1027000010270000FFFFFFFF0000803F0000803F0000803F0000803F"
+putarray 10 7 "0x000000000000803F0000003F0000003F0000E04000606A46000070412731083E"
+putarray 10 8 "0x00000000000016440000803F0000803F00007A440000803F0000803F0000FA44"
+putarray 10 9 "0x67E6096A85AE67BB72F36E3C3AF54FA57F520E518C68059BABD9831F19CDE05B"
+putarray 10 10 "0xD89E05C107D57C3617DD703039590EF7310BC0FF11155868A78FF964A44FFABE" 
+putarray 10 11 "0x0000803F00007A4300001644CDCC4C3F000000400000403F0000803F00007042" 
+putarray 10 12 "0x9A99593F9A99593F0AD7633F52B8BE3FE17A543FCDCC4C3D4260E53BAE47A13F" 
+putarray 10 13 "0x000000400000003F0000A04000409C4600409C450060EA450000003F00002041"
+putarray 10 14 "0x0000803F0000803F0000803F0000803F0000803F0000803F85D2740E00004843"
+putarray 10 15 "0x0000C8420000C8420000A040000000000000803F0000803F0000803F00606A46"
+putarray 10 16 "0xC7C7C7C7C7C7C7C7C7C7C7C7C7C7C7C7C7C7C7C7C7C7C7C7C7C7C7C7C7C7C7C7"
+putarray 10 17 "0x05000000320000006400000014000000010000009A99993E0A00000064000000"
+putarray 10 18 "0x6F168073B9B21449D742241700068ADABC306FA9AA3831164DEE8DE34E0EFBB0"
+
+
+print "..........::::::::::256-BIT AES KEY RECOVERY - BY GHFEAR::::::::::.......... SCAN: 3/3 : Version 2.0
+¦
+¦
+¦
+¦
+"
+
+
+print "Finding 256-bit AES Keys in %FOLDER%.exe (This should be pretty quick!).
+¦"
+
+do 
+
+    findloc OBJE binary "\xC7"
+	goto OBJE
+
+    
+    get TEST byte
+   
+    if TEST == 0xC7
+        savepos ENTRY_OFF
+        get DUMMY short
+        get AES1 long
+	    get TEST2 byte
+	
+	    if TEST2 == 0xC7
+		    get DUMMY2 short
+            get AES2 long
+			get DUMMY72 long
+	        get TEST3 byte		    
+					
+			if TEST3 == 0xC7
+			    get DUMMY4 short
+                get AES3 long
+	            get TEST4 byte
+				
+				if TEST4 == 0xC7
+			        get DUMMY6 short
+                    get AES4 long
+					#get DUMMY71 long
+	                get TEST5 byte
+				    
+				
+				    if TEST5 == 0xC7
+			            get DUMMY6 short
+                        get AES5 long
+	                    get TEST6 byte
+				        
+						if TEST6 == 0xC7
+			                get DUMMY8 short
+                            get AES6 long
+	                        get TEST6 byte
+				        
+						    if TEST5 == 0xC7
+			                    get DUMMY6 short
+                                get AES7 long
+	                            get TEST6 byte
+				        
+						        if TEST6 == 0xC7
+			                        get DUMMY8 short
+                                    get AES8 long
+	                                get TESTC3 byte
+									
+									
+				                    #Calculate OFFSET
+						            xmath OFFSET "ENTRY_OFF + 2"
+									xmath OFFSET2 "ENTRY_OFF + 9"
+									xmath OFFSET3 "ENTRY_OFF + 20"
+									xmath OFFSET4 "ENTRY_OFF + 27"
+									xmath OFFSET5 "ENTRY_OFF + 34"
+									xmath OFFSET6 "ENTRY_OFF + 41"
+									xmath OFFSET7 "ENTRY_OFF + 48"
+									xmath OFFSET8 "ENTRY_OFF + 55"
+									
+									
+									
+									#Set NAME and FULL_AES to Possible AES Key
+									string NAME p "%s\%s\0x%08X%08X%08X%08X%08X%08X%08X%08X" FOLDER "OFFSET" "AES1" "AES2" "AES3" "AES4" "AES5" "AES6" "AES7" "AES8"
+									string FULL_AES p "0x%08X%08X%08X%08X%08X%08X%08X%08X" "AES1" "AES2" "AES3" "AES4" "AES5" "AES6" "AES7" "AES8"
+
+									
+									math FALSEPOSITIVE = 0
+									
+									#Check For False Positives and LOG if PASS
+									
+									
+							        getarray KEYS 10 -0x80000000
+									for i = 0 < KEYS
+									    getarray STR 10 i
+									    if STR == FULL_AES
+										
+									        math FALSEPOSITIVE = 1
+										
+										else
+                                            
+											
+											
+									    endif
+										
+										
+										
+									next i
+									
+									if FALSEPOSITIVE = 0
+										append
+				                        log NAME OFFSET 4
+									
+									    log NAME OFFSET2 4
+									    log NAME OFFSET3 4
+									    log NAME OFFSET4 4
+									    log NAME OFFSET5 4
+									    log NAME OFFSET6 4
+									    log NAME OFFSET7 4
+									    log NAME OFFSET8 4
+									    append
+									
+									    if FOUND == "TRUE"
+									        print "Possible AES Key found! Looking for more...
+										¦"
+										string FOUND = "FALSE"
+										endif
+									    print "%FULL_AES%
+									    ¦"
+											
+											
+									else
+										
+									
+									endif
+									
+							        
+						
+				
+					
+				                else	
+				                endif	
+				
+					
+				            else	
+				            endif	
+				            
+					
+				        else	
+				        endif	
+				
+					
+				    else	
+				    endif	
+				
+				
+					
+				else	
+				endif	
+				
+                
+				
+			else	
+            endif
+            
+		else	
+        endif
+        
+
+
+    else
+    endif		
+    
+    
+	math SIZE - 1			
+    if SIZE < 60
+	    print "¦
+¦
+¦
+¦SCAN 2/2 DONE!
+¦
+--------------------------------------------------------------------"
+        cleanexit
+	    
+	endif
+   	
+
+   
+while SIZE > 0
+
+
+
+
+
+
+
+
+
+
+findloc OBJE binary "\xCB\x35\xAA\x2B"
+print "%OBJE%"

@@ -1,0 +1,28 @@
+endian little
+findloc UE4VERSION unicode "Release-4"
+math UE4VERSION + 20
+goto UE4VERSION
+getct UE4V unicode ''
+set CHKNAME "UE4V"
+
+set INT1 int "CHKNAME"
+
+
+string FULL p "Unreal Engine Version: 4.%s" "CHKNAME"
+
+if INT1 < 19
+    print " "
+    print "%FULL% [ is not supported ]"
+    print " "
+	print "By downloading and using this tool you agree that this tool is for research purposes only and that I (GHFear) am not responsible for what (you) the end user does with it."
+    print " "
+
+else
+
+    print " "
+    print "%FULL% [ is supported ]"
+    print " "
+	print "By downloading and using this tool you agree that this tool is for research purposes only and that I (GHFear) am not responsible for what (you) the end user does with it."
+    print " "
+
+endif
